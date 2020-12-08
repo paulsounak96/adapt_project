@@ -35,6 +35,7 @@ adapt_ROC_curve <- function(rejection_list,alphas){
 
 
 simulate <- function(n,p,s,amplitude,rho,ko_stat=stat.glmnet_lambdasmax){
+  set.seed(sample(1:100,1))
   k = p * s           # number of variables with nonzero coefficients
   
   # Generate the variables from a multivariate normal distribution
@@ -109,9 +110,6 @@ simulate <- function(n,p,s,amplitude,rho,ko_stat=stat.glmnet_lambdasmax){
   results<-rbind(results,cbind(adapt_ROC_curve(res4$rejs,alphas=alphas),"KadaPT"))
   results <-data.frame(results)
   colnames(results) <- c("Target FDR","Power","FDR","Method")
-  results[,1] <- as.numeric(results[,1])
-  results[,2] <- as.numeric(results[,2])
-  results[,3] <- as.numeric(results[,3])
   return(results)
 }
 
