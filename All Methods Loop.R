@@ -11,6 +11,8 @@ rholist <- c(0,0.1,0.2,0.3,0.4,0.5)
 amplitudelist <- c(5)
 ko_stat = stat.glmnet_lambdasmax
 iter_list <- expand.grid(nlist,ndivplist,slist,rholist,amplitudelist)
+iter_list <- iter_list[order(iter_list[,1],-iter_list[,2],-iter_list[,3]),]
+
 outfile="results.csv"
 ntrials = 50
 
