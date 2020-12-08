@@ -56,7 +56,7 @@ server <- function(input, output) {
     
     dat <- agg[agg["n"] ==input$var1 & agg["pdivn"] ==input$var2 & agg["s"] == input$var3 & agg["rho"] == input$var4,]
     
-    dat %>%   ggplot( aes(x=dat$`Target FDR`, y=dat$`Power`, group=dat$`Method`, color=dat$`Method`)) +
+    dat %>%   ggplot( aes(x=dat$`Target FDR`, y=dat$`FDR`, group=dat$`Method`, color=dat$`Method`)) +
       geom_line() + xlab("Target FDR") + ylab("FDR") +ggtitle("FDR") + 
       theme(plot.title = element_text(size=22,hjust = 0.5),legend.title = element_blank()) 
     

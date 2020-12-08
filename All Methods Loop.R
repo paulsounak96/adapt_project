@@ -14,10 +14,10 @@ ko_stat = stat.glmnet_lambdasmax
 iter_list <- expand.grid(nlist,ndivplist,slist,rholist,amplitudelist)
 iter_list <- iter_list[order(iter_list[,4],iter_list[,1],-iter_list[,2],-iter_list[,3]),]
 
-outfile="results2.csv"
+outfile="results3.csv"
 ntrials = 50
 
-for(i in 6:length(iter_list)){
+for(i in 7:nrow(iter_list)){
   n = iter_list[i,1]    
   p = n*iter_list[i,2]     
   s = iter_list[i,3]
