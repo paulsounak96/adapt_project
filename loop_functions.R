@@ -103,10 +103,10 @@ simulate <- function(n,p,s,amplitude,rho,ko_stat=stat.glmnet_lambdasmax){
   
   results<- cbind(KO_ROC_curve(result$statistic,alphas=alphas),"Knockoff")
   results<- rbind(results,cbind(KO_ROC_curve(stat_cust,alphas=alphas),"Knockoff (alt 1)"))
-  results<-rbind(results,cbind(adapt_ROC(res1$rejs,alphas=alphas),"AdaPT"))
-  results<-rbind(results,cbind(adapt_ROC(res2$rejs,alphas=alphas),"AdaPT (alt 1)"))
-  results<-rbind(results,cbind(adapt_ROC(res3$rejs,alphas=alphas),"AdaPT (alt 2)"))
-  results<-rbind(results,cbind(adapt_ROC(res4$rejs,alphas=alphas),"KadaPT"))
+  results<-rbind(results,cbind(adapt_ROC_curve(res1$rejs,alphas=alphas),"AdaPT"))
+  results<-rbind(results,cbind(adapt_ROC_curve(res2$rejs,alphas=alphas),"AdaPT (alt 1)"))
+  results<-rbind(results,cbind(adapt_ROC_curve(res3$rejs,alphas=alphas),"AdaPT (alt 2)"))
+  results<-rbind(results,cbind(adapt_ROC_curve(res4$rejs,alphas=alphas),"KadaPT"))
   results <-data.frame(results)
   colnames(results) <- c("Target FDR","Power","FDR","Method")
   results[,1] <- as.numeric(results[,1])
@@ -118,7 +118,12 @@ simulate <- function(n,p,s,amplitude,rho,ko_stat=stat.glmnet_lambdasmax){
 
 simulate_loop <- function(n,p,s,amplitude,rho,ko_stat=stat.glmnet_lambdasmax,ntrials=100,out="out.csv"){
   for(i in 1:ntrials){
-    res<- cbind(simulate(n,p,s,amplitude,rho,ko_stat=stat.glmnet_lambdasmax),n,p,s,amplitude,rho,ntrials,i)
+    dat <- simulate(n,p,s,amplitude,rho,ko_stat=stat.glmnet_lambdasmax)
+    if(class(dat) == "try-error"){
+      dat <- c(rep(NA,6))
+    }
+    
+    res <- cbind(dat,n,p,s,amplitude,rho,i,ntrials)
     
     if(file.exists(out)){
       write.table(res, out, sep = ",",append = T,row.names=F,col.names=F)
