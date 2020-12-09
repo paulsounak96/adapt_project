@@ -1,4 +1,4 @@
-set.seed(123)
+set.seed(666)
 library(ggplot2)
 library(doMC)
 library(knockoff)
@@ -6,14 +6,14 @@ library(kableExtra)
 
 
 
-nlist <- c(1000)
-ndivplist <- c(0.15,0.25)
-slist <- c(0.1,0.25,0.5)
-rholist <- c(0,0.025,0.05,0.075,0.1,0.2)
+nlist <- c(5000)
+ndivplist <- c(0.15,0.2)
+slist <- c(0.1)
+rholist <- c(0,0.05,0.1,0.15,0.2)
 amplitudelist <- c(5)
 iter_list <- expand.grid(nlist,ndivplist,slist,rholist,amplitudelist)
-ntrials = 2
-outfile = "results.csv"
+ntrials = 10
+outfile = "simulations.csv"
 
 for(mnum in 1:nrow(iter_list)){
   
@@ -49,7 +49,6 @@ for(mnum in 1:nrow(iter_list)){
     source("kadapt.r")
     
     mu = rep(0,p)
-    rho = 0
     Sigma = toeplitz(rho^(0:(p-1)))
     X = matrix(rnorm(n*p),n) %*% chol(Sigma)
     
@@ -63,8 +62,6 @@ for(mnum in 1:nrow(iter_list)){
     create_knockoffs = function(X) {
       create.second_order(X, shrink=T)
     }
-    
-    
     
     knockoffs = function(X) create.second_order(X, method='equi')
     
@@ -249,18 +246,4 @@ for(mnum in 1:nrow(iter_list)){
   }
   
 }
-
-
-
-
-
-df <- data.frame(target.fdr = t.fdr, power.Kada = disp.dpower.kadapt, power.Knockoff = disp.dpower.k, power.adapt = disp.dpower.a)
-df2 <- melt(data = df, id.vars = "target.fdr")
-
-ggplot(data = df2, aes(x = target.fdr, y = value, colour = variable)) + geom_line() + 
-  xlab("target fdr") + 
-  ggtitle("Power: Kadapt vs Knock-off")
-
-
-
 
