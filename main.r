@@ -6,7 +6,7 @@ library(kableExtra)
 
 
 
-nlist <- c(5000,6000)
+nlist <- c(1000)
 ndivplist <- c(0.15,0.25)
 slist <- c(0.1,0.25,0.5)
 rholist <- c(0,0.025,0.05,0.075,0.1,0.2)
@@ -25,7 +25,7 @@ for(mnum in 1:nrow(iter_list)){
   amplitude = iter_list[mnum,5]  
   k = p * s   
   
-  setup <- data.frame(n,p,spr,s,k,amplitude,ntrials,t.fdr=1:20 * 0.01)
+  setup <- data.frame(n,p,spr,s,k,rho,amplitude,ntrials,t.fdr=1:20 * 0.01)
   
   dpower.kadapt <- setup
   dpower.k <- setup
@@ -231,15 +231,15 @@ for(mnum in 1:nrow(iter_list)){
     print(end - start)
   }
   
-  results_combined <- merge(dfdr.kadapt,dfdr.k,by=c('n','p','spr','s','k','amplitude','ntrials','t.fdr'))
-  results_combined <- merge(results_combined,dfdr.a,by=c('n','p','spr','s','k','amplitude','ntrials','t.fdr'))
-  results_combined <- merge(results_combined,dfdr.james,by=c('n','p','spr','s','k','amplitude','ntrials','t.fdr'))
-  results_combined <- merge(results_combined,dfdr.sounak,by=c('n','p','spr','s','k','amplitude','ntrials','t.fdr'))
-  results_combined <- merge(results_combined,dpower.kadapt,by=c('n','p','spr','s','k','amplitude','ntrials','t.fdr'))
-  results_combined <- merge(results_combined,dpower.k,by=c('n','p','spr','s','k','amplitude','ntrials','t.fdr'))
-  results_combined <- merge(results_combined,dpower.a,by=c('n','p','spr','s','k','amplitude','ntrials','t.fdr'))
-  results_combined <- merge(results_combined,dpower.james,by=c('n','p','spr','s','k','amplitude','ntrials','t.fdr'))
-  results_combined <- merge(results_combined,dpower.sounak,by=c('n','p','spr','s','k','amplitude','ntrials','t.fdr'))
+  results_combined <- merge(dfdr.kadapt,dfdr.k,by=c('n','p','spr','s','k','rho','amplitude','ntrials','t.fdr'))
+  results_combined <- merge(results_combined,dfdr.a,,by=c('n','p','spr','s','k','rho','amplitude','ntrials','t.fdr'))
+  results_combined <- merge(results_combined,dfdr.james,,by=c('n','p','spr','s','k','rho','amplitude','ntrials','t.fdr'))
+  results_combined <- merge(results_combined,dfdr.sounak,,by=c('n','p','spr','s','k','rho','amplitude','ntrials','t.fdr'))
+  results_combined <- merge(results_combined,dpower.kadapt,,by=c('n','p','spr','s','k','rho','amplitude','ntrials','t.fdr'))
+  results_combined <- merge(results_combined,dpower.k,,by=c('n','p','spr','s','k','rho','amplitude','ntrials','t.fdr'))
+  results_combined <- merge(results_combined,dpower.a,,by=c('n','p','spr','s','k','rho','amplitude','ntrials','t.fdr'))
+  results_combined <- merge(results_combined,dpower.james,,by=c('n','p','spr','s','k','rho','amplitude','ntrials','t.fdr'))
+  results_combined <- merge(results_combined,dpower.sounak,,by=c('n','p','spr','s','k','rho','amplitude','ntrials','t.fdr'))
   
   if(file.exists(outfile)) {
     write.table(results_combined, outfile, sep = ",",append = T,row.names=F,col.names=F)
@@ -250,6 +250,16 @@ for(mnum in 1:nrow(iter_list)){
   
 }
 
+
+
+
+
+df <- data.frame(target.fdr = t.fdr, power.Kada = disp.dpower.kadapt, power.Knockoff = disp.dpower.k, power.adapt = disp.dpower.a)
+df2 <- melt(data = df, id.vars = "target.fdr")
+
+ggplot(data = df2, aes(x = target.fdr, y = value, colour = variable)) + geom_line() + 
+  xlab("target fdr") + 
+  ggtitle("Power: Kadapt vs Knock-off")
 
 
 
