@@ -6,14 +6,14 @@ library(kableExtra)
 
 
 
-nlist <- c(1000)
+nlist <- c(5000,6000)
 ndivplist <- c(0.15,0.25)
 slist <- c(0.1,0.25,0.5)
-rholist <- c(0,0.025,0.05,0.075,0.1,0.2)
+rholist <- c(0.1,0.2,0.3,0.4,0.5)
 amplitudelist <- c(5)
 iter_list <- expand.grid(nlist,ndivplist,slist,rholist,amplitudelist)
 ntrials = 2
-outfile = "results.csv"
+outfile = "resultsMACnew.csv"
 
 for(mnum in 1:nrow(iter_list)){
   
@@ -49,7 +49,6 @@ for(mnum in 1:nrow(iter_list)){
     source("kadapt.r")
     
     mu = rep(0,p)
-    rho = 0
     Sigma = toeplitz(rho^(0:(p-1)))
     X = matrix(rnorm(n*p),n) %*% chol(Sigma)
     
