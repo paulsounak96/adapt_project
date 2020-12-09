@@ -96,8 +96,6 @@ for(mnum in 1:nrow(iter_list)){
     x <- data.frame(x = as.numeric(x))
     
     
-    
-    library(adaptMT)
     # Generate models for function adapt
     library("splines")
     formulas <- paste0("ns(x, df = ", 6:10, ")")
@@ -187,7 +185,7 @@ for(mnum in 1:nrow(iter_list)){
     fdr.sounak <- numeric()
     
     for(i in 1:20){
-      rej <- res.james$rejs[[i]]
+      rej <- res.sounak$rejs[[i]]
       power.sounak <- c(power.sounak, sum(rej %in% nonzero) / length(nonzero))
       fdr.sounak <- c(fdr.sounak,sum(beta[rej] == 0) / max(1, length(rej)))
     }
@@ -252,16 +250,6 @@ for(mnum in 1:nrow(iter_list)){
   
 }
 
-
-
-
-
-df <- data.frame(target.fdr = t.fdr, power.Kada = disp.dpower.kadapt, power.Knockoff = disp.dpower.k, power.adapt = disp.dpower.a)
-df2 <- melt(data = df, id.vars = "target.fdr")
-
-ggplot(data = df2, aes(x = target.fdr, y = value, colour = variable)) + geom_line() + 
-  xlab("target fdr") + 
-  ggtitle("Power: Kadapt vs Knock-off")
 
 
 
