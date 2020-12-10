@@ -6,10 +6,10 @@ library(kableExtra)
 
 
 
-nlist <- c(6000)
+nlist <- c(5000)
 ndivplist <- c(0.15,0.2)
 slist <- c(0.1)
-rholist <- c(0,0.05,0.1,0.15,0.2)
+rholist <- c(0.1)
 amplitudelist <- c(5)
 iter_list <- expand.grid(nlist,ndivplist,slist,rholist,amplitudelist)
 ntrials = 10
