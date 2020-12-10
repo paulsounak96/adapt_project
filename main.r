@@ -6,7 +6,7 @@ library(kableExtra)
 
 
 
-nlist <- c(5000)
+nlist <- c(6000)
 ndivplist <- c(0.15,0.2)
 slist <- c(0.1)
 rholist <- c(0,0.05,0.1,0.15,0.2)
